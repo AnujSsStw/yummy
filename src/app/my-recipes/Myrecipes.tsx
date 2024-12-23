@@ -43,7 +43,7 @@ export const MyRecipes = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {recipes.map(
             (
-              recipe: { recipe_id: string; title: string; thumbnail: any },
+              recipe: { recipe_id: number; title: string; thumbnail: any },
               idx: Key | null | undefined
             ) => (
               <div key={idx} className="relative">
@@ -56,7 +56,7 @@ export const MyRecipes = ({
                   removeFromList={(id) => {
                     setRecipes(
                       recipes.filter(
-                        (recipe: { recipe_id: string }) =>
+                        (recipe: { recipe_id: number }) =>
                           recipe.recipe_id !== id
                       )
                     );
