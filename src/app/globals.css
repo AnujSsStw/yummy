@@ -59,7 +59,7 @@ body {
   transform: translateX(0); /* Slide in when open */
 }
 
-/* headline */
+/* headline o */
 @keyframes scroll {
   0% {
     transform: translateX(100%);
