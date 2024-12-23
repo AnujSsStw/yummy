@@ -1,17 +1,66 @@
 import { fetchPreloadedData } from "@/lib/tasty-api";
 import HomeClient from "@/components/HomeClient";
 import { fetchTags } from "@/lib/tasty-api";
+import { auth } from "@/lib/auth";
+
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"; // Replace with your domain
+export const getUserLikes = async (userId: string) => {
+  try {
+    const response = await fetch(
+      BASE_URL + `/api/get-saved-recipes?userId=${userId}`
+    );
+
+    if (response.ok) {
+      return await response.json();
+    } else {
+      const errorData = await response.json().catch(() => null);
+      console.error(
+        "Failed to fetch user likes:",
+        errorData || response.statusText
+      );
+      return [];
+    }
+  } catch (error) {
+    console.error("Error fetching user likes:", error);
+    return [];
+  }
+};
 
 export default async function Home() {
   try {
     const { popular, trending, otherSections } = await fetchPreloadedData();
     const tags = await fetchTags();
     const filteredCategories = tags.results
-      .filter((tag) => tag.type === "cuisine" || tag.type === "dietary")
-      .map((tag) => ({
+      .filter(
+        (tag: { type: string }) =>
+          tag.type === "cuisine" || tag.type === "dietary"
+      )
+      .map((tag: { name: any; display_name: any }) => ({
         name: tag.name,
         displayName: tag.display_name,
       }));
+
+    const session = await auth();
+    let userLikes = [];
+    if (session) {
+      userLikes = await getUserLikes(session.user.id);
+    }
+
+    const updatedOtherSections = otherSections.map(
+      (section: { items: any[] }) => {
+        return {
+          ...section,
+          items: section.items.map((item: { id: any; liked: any }) => {
+            const isLiked = userLikes.some(
+              (savedRecipe: { recipe_id: any }) =>
+                savedRecipe.recipe_id === item.id
+            );
+            item.liked = isLiked;
+            return item;
+          }),
+        };
+      }
+    );
 
     // Define categories for the homepage
     const categories = [
@@ -29,8 +78,9 @@ export default async function Home() {
         <HomeClient
           popular={popular}
           trending={trending}
-          otherSections={otherSections}
+          otherSections={updatedOtherSections}
           categories={filteredCategories}
+          userLikes={userLikes}
         />
       </div>
     );

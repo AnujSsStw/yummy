@@ -55,6 +55,7 @@ export default function HomeClient({
   trending: any[];
   otherSections: any[];
   categories?: string[];
+  userLikes?: any[];
 }) {
   // const [categories, setCategories] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -64,48 +65,6 @@ export default function HomeClient({
 
   const dropdownRef = useRef(null);
   const router = useRouter();
-
-  const { data: session } = useSession();
-
-  useEffect(() => {
-    const checkIfLiked = async () => {
-      if (!session || !session.user) return;
-      try {
-        const response = await fetch(
-          `/api/get-saved-recipes?userId=${session.user.id}`
-        );
-        if (response.ok) {
-          const savedRecipes = await response.json();
-
-          //TODO: update popular and trending recipes also
-
-          setOtherSectionsState((prev) =>
-            prev.map((section) => {
-              return {
-                ...section,
-                items: section.items.map((item: { id: any; liked: any }) => {
-                  const isLiked = savedRecipes.some(
-                    (savedRecipe: { recipe_id: any }) =>
-                      savedRecipe.recipe_id === item.id
-                  );
-
-                  item.liked = isLiked;
-                  return item;
-                }),
-              };
-            })
-          );
-        } else {
-          console.error("Failed to fetch saved recipes.");
-        }
-      } catch (error) {
-        console.error("Error checking liked status:", error);
-      } finally {
-      }
-    };
-
-    checkIfLiked();
-  }, [session]);
 
   // Handle search suggestions
   const fetchSuggestions = async (query: string | undefined) => {

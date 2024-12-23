@@ -3,6 +3,7 @@ import { fetchTags } from "@/lib/tasty-api";
 import Link from "next/link"; // Added Link for navigation
 import { Key } from "react";
 import { MyRecipes } from "./Myrecipes";
+import { getUserLikes } from "../page";
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"; // Replace with your domain
 
 export default async function MyRecipesPage() {
@@ -25,12 +26,7 @@ export default async function MyRecipesPage() {
       },
     };
   }
-  const user_saved_recipes = (
-    await fetch(
-      BASE_URL +
-        `/api/get-saved-recipes?userId=${encodeURIComponent(session?.user.id!)}`
-    )
-  ).json();
+  const user_saved_recipes = await getUserLikes(session.user.id);
 
   return (
     <div className="flex">

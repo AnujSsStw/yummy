@@ -21,7 +21,7 @@ export const fetchRecipes = async (
         "x-rapidapi-key": API_KEY,
         "x-rapidapi-host": API_HOST,
       },
-      cache: "force-cache",
+      // cache: "force-cache",
     });
 
     if (!res.ok) {
@@ -49,7 +49,7 @@ export const fetchRecipeDetails = async (id: string) => {
         "x-rapidapi-key": API_KEY!,
         "x-rapidapi-host": API_HOST!,
       },
-      cache: "force-cache",
+      // cache: "force-cache",
     });
 
     if (!res.ok) {
@@ -81,7 +81,7 @@ export const fetchFeeds = async (): Promise<any | null> => {
         "x-rapidapi-key": API_KEY,
         "x-rapidapi-host": API_HOST,
       },
-      cache: "force-cache",
+      // cache: "force-cache",
     });
 
     if (!res.ok) {

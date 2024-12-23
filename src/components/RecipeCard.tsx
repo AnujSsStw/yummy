@@ -109,7 +109,7 @@ export const RecipeCard = React.memo(function RecipeCard({
             onClick={handleLike}
             aria-label="Like"
             className={`rounded-full p-2 shadow transition ${
-              liked ? "bg-primary text-white" : "bg-white text-gray-700"
+              liked ? "bg-red-600 text-white" : "bg-white text-gray-700"
             } hover:bg-primary group`}
           >
             <svg
