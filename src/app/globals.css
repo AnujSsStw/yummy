@@ -58,3 +58,24 @@ body {
 #mobile-menu.open {
   transform: translateX(0); /* Slide in when open */
 }
+
+/* headline */
+@keyframes scroll {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-scroll {
+  animation: scroll 20s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-scroll {
+    animation: none;
+    transform: translateX(0);
+  }
+}
