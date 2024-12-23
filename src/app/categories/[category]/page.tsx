@@ -1,4 +1,4 @@
-import { getUserLikes } from "@/app/page";
+import { getUserLikes } from "@/lib/getUserLikes";
 import { auth } from "@/lib/auth";
 import { fetchRecipes, fetchTags } from "@/lib/tasty-api";
 import Link from "next/link";

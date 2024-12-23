@@ -3,7 +3,7 @@ import { fetchTags } from "@/lib/tasty-api";
 import Link from "next/link"; // Added Link for navigation
 import { Key } from "react";
 import { MyRecipes } from "./Myrecipes";
-import { getUserLikes } from "../page";
+import { getUserLikes } from "../../lib/getUserLikes";
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"; // Replace with your domain
 
 export default async function MyRecipesPage() {

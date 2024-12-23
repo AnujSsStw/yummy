@@ -1,12 +1,11 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { useSession } from "next-auth/react";
 import Head from "next/head";
-import { RecipeCard } from "./RecipeCard"; // Import RecipeCard component
+import Image from "next/image";
+import Link from "next/link";
+import { Key, useCallback, useState } from "react";
 import slugify from "slugify";
+import { RecipeCard } from "./RecipeCard"; // Import RecipeCard component
 
 export function RecipeDetailsClient({
   recipe,
@@ -76,17 +75,20 @@ export function RecipeDetailsClient({
     name: recipe.name,
     image: recipe.thumbnail_url,
     description: recipe.description || "A delicious recipe to try out.",
-    recipeIngredient: recipe.sections?.flatMap((section) =>
-      section.components.map((item) => item.raw_text)
+    recipeIngredient: recipe.sections?.flatMap(
+      (section: { components: any[] }) =>
+        section.components.map((item: { raw_text: any }) => item.raw_text)
     ),
-    recipeInstructions: recipe.instructions?.map((step) => step.display_text),
+    recipeInstructions: recipe.instructions?.map(
+      (step: { display_text: any }) => step.display_text
+    ),
     cookTime: `PT${recipe.cook_time_minutes || 0}M`,
     prepTime: `PT${recipe.prep_time_minutes || 0}M`,
     recipeYield: `${recipe.num_servings || 1} serving(s)`,
     keywords: categories.map((cat) => cat.name).join(", "),
   };
 
-  const renderDetails = (text) => (
+  const renderDetails = (text: any) => (
     <div
       dangerouslySetInnerHTML={{ __html: text }}
       className="recipe-details"
@@ -239,11 +241,16 @@ export function RecipeDetailsClient({
                   Ingredients
                 </h2>
                 <ul className="list-disc list-inside space-y-2 text-gray-700">
-                  {recipe.sections[0]?.components.map((item, index) => (
-                    <li key={index}>
-                      {item.raw_text || "No ingredient details available"}
-                    </li>
-                  ))}
+                  {recipe.sections[0]?.components.map(
+                    (
+                      item: { raw_text: any },
+                      index: Key | null | undefined
+                    ) => (
+                      <li key={index}>
+                        {item.raw_text || "No ingredient details available"}
+                      </li>
+                    )
+                  )}
                 </ul>
               </div>
             )}
@@ -256,9 +263,11 @@ export function RecipeDetailsClient({
                 Instructions
               </h2>
               <ol className="list-decimal list-inside space-y-2 text-gray-700">
-                {recipe.instructions.map((step, index) => (
-                  <li key={index}>{step.display_text}</li>
-                ))}
+                {(recipe.instructions as any[]).map(
+                  (step: { display_text: string }, index) => (
+                    <li key={index}>{step.display_text}</li>
+                  )
+                )}
               </ol>
             </div>
           )}

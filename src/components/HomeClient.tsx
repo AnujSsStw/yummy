@@ -54,7 +54,7 @@ export default function HomeClient({
   popular: any[];
   trending: any[];
   otherSections: any[];
-  categories?: string[];
+  categories?: { name: string; displayName: string }[];
   userLikes?: any[];
 }) {
   // const [categories, setCategories] = useState([]);
@@ -117,30 +117,32 @@ export default function HomeClient({
                 {loadingSuggestions ? (
                   <li className="p-3 text-center text-gray-500">Loading...</li>
                 ) : (
-                  suggestions.map((recipe) => (
-                    <li
-                      key={recipe.id || recipe.name}
-                      className="p-3 border-b hover:bg-gray-100 transition"
-                    >
-                      <Link
-                        href={`/recipes/${recipe.id}`}
-                        className="flex items-center space-x-4"
-                        onClick={() => setSuggestions([])}
+                  suggestions.map(
+                    (recipe: { id: any; name: string; thumbnail_url: any }) => (
+                      <li
+                        key={recipe.id || recipe.name}
+                        className="p-3 border-b hover:bg-gray-100 transition"
                       >
-                        <img
-                          src={
-                            recipe.thumbnail_url ||
-                            "https://via.placeholder.com/50x50?text=No+Image"
-                          }
-                          alt={recipe.name}
-                          className="w-12 h-12 rounded object-cover"
-                        />
-                        <span className="text-sm text-gray-700">
-                          {recipe.name}
-                        </span>
-                      </Link>
-                    </li>
-                  ))
+                        <Link
+                          href={`/recipes/${recipe.id}`}
+                          className="flex items-center space-x-4"
+                          onClick={() => setSuggestions([])}
+                        >
+                          <img
+                            src={
+                              recipe.thumbnail_url ||
+                              "https://via.placeholder.com/50x50?text=No+Image"
+                            }
+                            alt={recipe.name}
+                            className="w-12 h-12 rounded object-cover"
+                          />
+                          <span className="text-sm text-gray-700">
+                            {recipe.name}
+                          </span>
+                        </Link>
+                      </li>
+                    )
+                  )
                 )}
               </ul>
             )}

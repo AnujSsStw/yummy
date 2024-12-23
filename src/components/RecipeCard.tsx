@@ -16,14 +16,16 @@ export const RecipeCard = React.memo(function RecipeCard({
   removeFromList,
   isLiked,
 }: {
-  id: number;
+  id: string;
   title: string;
   thumbnail: string;
   cookTime?: number;
   servings?: number;
-  removeFromList?: (id: number) => void;
+  removeFromList?: (id: string) => void;
   isLiked?: boolean;
 }) {
+  console.log("RecipeCard rendered", id);
+
   const [liked, setLiked] = useState(isLiked);
   const { data: session } = useSession();
 
